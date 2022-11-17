@@ -90,14 +90,14 @@ ConVar sv_autojump( "sv_autojump", "0" );
 
 ConVar hl2_walkspeed( "hl2_walkspeed", "150" );
 ConVar hl2_normspeed( "hl2_normspeed", "190" );
-ConVar hl2_sprintspeed( "hl2_sprintspeed", "320" );
+ConVar hl2_sprintspeed( "hl2_sprintspeed", "280" );
 
 ConVar hl2_darkness_flashlight_factor ( "hl2_darkness_flashlight_factor", "1" );
 
 #ifdef HL2MP
 	#define	HL2_WALK_SPEED 150
 	#define	HL2_NORM_SPEED 190
-	#define	HL2_SPRINT_SPEED 320
+	#define	HL2_SPRINT_SPEED 280
 #else
 	#define	HL2_WALK_SPEED hl2_walkspeed.GetFloat()
 	#define	HL2_NORM_SPEED hl2_normspeed.GetFloat()
@@ -646,9 +646,9 @@ CHL2_Player::CHL2_Player()
 #define SUITPOWER_CHARGE_RATE	12.5											// 100 units in 8 seconds
 
 #ifdef HL2MP
-	CSuitPowerDevice SuitDeviceSprint( bits_SUIT_DEVICE_SPRINT, 25.0f );				// 100 units in 4 seconds
+	CSuitPowerDevice SuitDeviceSprint( bits_SUIT_DEVICE_SPRINT, 0.0f );				// Infinite
 #else
-	CSuitPowerDevice SuitDeviceSprint( bits_SUIT_DEVICE_SPRINT, 12.5f );				// 100 units in 8 seconds
+	CSuitPowerDevice SuitDeviceSprint( bits_SUIT_DEVICE_SPRINT, 0.0f );				// Infinite
 #endif
 
 #ifdef HL2_EPISODIC
@@ -2494,7 +2494,7 @@ bool CHL2_Player::SuitPower_RemoveDevice( const CSuitPowerDevice &device )
 	// because the battery is drained, no harm done, the battery charge cannot go below 0. 
 	// This code in combination with the delay before the suit can start recharging are a defense
 	// against exploits where the player could rapidly tap sprint and never run out of power.
-	SuitPower_Drain( device.GetDeviceDrainRate() * 0.1f );
+	SuitPower_Drain( device.GetDeviceDrainRate() * 0.0f );
 
 	m_HL2Local.m_bitsActiveDevices &= ~device.GetDeviceID();
 	m_flSuitPowerLoad -= device.GetDeviceDrainRate();
